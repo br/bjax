@@ -1,8 +1,8 @@
 if Workling
-  if Workling::Starling.config
-    Workling::Starling.config[:listeners] = {} unless Workling::Starling.config[:listeners]
-    Workling::Starling.config[:listeners]["BjaxWorker"] = {"sleep_time" => 0.5}
-  end
+  #if Workling::Starling.config
+  #  Workling::Starling.config[:listeners] = {} unless Workling::Starling.config[:listeners]
+  #  Workling::Starling.config[:listeners]["BjaxWorker"] = {"sleep_time" => 0.5}
+  #end
   
   class BjaxWorker < Workling::Base
     
