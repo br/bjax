@@ -2,7 +2,6 @@ class BjaxJobPollingController < ActionController::Base
   
   skip_before_filter :verify_authenticity_token
   layout nil
-  session :off
   
   def check_status
     job_type = params[:id].split(":")[0]
