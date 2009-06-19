@@ -1,3 +1,5 @@
+# Install hook code here
+
 require 'fileutils'
 
 here = File.dirname(__FILE__)
@@ -7,4 +9,5 @@ puts "Installing Bjax..."
 FileUtils.cp("#{here}/media/bjax.js", "#{there}/public/javascripts/")
 
 puts "Bjax has been successfully installed."
-puts IO.read(File.join(File.dirname(__FILE__), 'README'))
+puts
+puts "Please refer to the readme file #{File.expand_path(here)}/README"

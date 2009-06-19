@@ -23,9 +23,10 @@ begin
   rescue
   end
 
-  params = @params = Marshal.load(ARGV[0].unpack("m")[0])
+  @params = Marshal.load(ARGV[0].unpack("m")[0])
   @juggernaut_channel = ARGV[2]
-  Marshal.load(ARGV[1].unpack("m")[0]).call
+
+  eval("params = @params\n" + ARGV[1].unpack("m")[0])
 
 rescue
   puts "%%%%BJ-error%%%%" + { :error => $! }.to_json + "%%%%BJ-error%%%%"
