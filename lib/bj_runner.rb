@@ -20,7 +20,8 @@ begin
       puts "%%%%BJ-status-updates%%%%" + input[:bjax_status_update].to_json + "%%%%BJ-status-updates%%%%"
       Juggernaut.send_to_channels(javascript_status_update_call(@params["key"], input[:bjax_status_update].to_json), [@juggernaut_channel])
     end
-  rescue
+  rescue Exception => e
+    HoptoadNotifier.notify(e)
   end
 
   @params = Marshal.load(ARGV[0].unpack("m")[0])
@@ -28,7 +29,8 @@ begin
 
   eval("params = @params\n" + ARGV[1].unpack("m")[0])
 
-rescue
+rescue Exception => e
+  HoptoadNotifier.notify(e)
   puts "%%%%BJ-error%%%%" + { :error => $! }.to_json + "%%%%BJ-error%%%%"
   Juggernaut.send_to_channels(javascript_error_response_call(@params["key"], { :error => $! }.to_json), [@juggernaut_channel])
 end

@@ -22,9 +22,10 @@ class Bjax < Sproc
     if Bjax.starling_available? && Bjax.workling_available?
       workling_call_remote
     else
-      bj_call_remote_on_localhost
+      raise "unable to connect to workling"
     end
-  rescue
+  rescue Exception => e
+    HoptoadNotifier.notify(e)
     bj_call_remote_on_localhost
   end
   
@@ -34,7 +35,8 @@ class Bjax < Sproc
     test = MemCache.new(Workling.config[:listens_on])
     test.set("testing","testing")
     return true
-  rescue
+  rescue Exception => e
+    HoptoadNotifier.notify(e)
     return false
   end
   
@@ -48,7 +50,8 @@ class Bjax < Sproc
       timer += 0.1
     end
     get
-  rescue
+  rescue Exception => e
+    HoptoadNotifier.notify(e)
     return false
   end
   
@@ -87,7 +90,8 @@ if Workling
       @juggernaut_channel = options[:juggernaut_channel]
 
       eval("params = @params\n" + options[:b64source].unpack("m")[0])
-    rescue
+    rescue Exception => e
+      HoptoadNotifier.notify(e)
       Workling.return.set(@uid + "-error", { :error => $! }.to_json)
       Juggernaut.send_to_channels(javascript_error_response_call(@params["key"], { :error => $! }.to_json), [@juggernaut_channel])
     end
@@ -115,7 +119,8 @@ if Workling
         Workling.return.set(@uid + "-status", input[:bjax_status_update].to_json)
         Juggernaut.send_to_channels(javascript_status_update_call(@params["key"], input[:bjax_status_update].to_json), [@juggernaut_channel])
       end
-    rescue
+    rescue Exception => e
+      HoptoadNotifier.notify(e)
     end
     
   end

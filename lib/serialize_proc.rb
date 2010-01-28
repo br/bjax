@@ -24,7 +24,8 @@ module ProcSource
         elsif File.exist?(filename)
           begin
             File.readlines(filename)[(start_line - 1) .. -1]
-          rescue
+          rescue Exception => e
+            HoptoadNotifier.notify(e)
             nil
           end
         end
